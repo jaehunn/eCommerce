@@ -33,7 +33,7 @@ const importData = async () => {
 
     console.log("Data Imported".green.inverse);
 
-    process.exit(1);
+    process.exit();
   } catch (err) {
     console.log(`${err}`.red.inverse);
 
@@ -57,8 +57,4 @@ const destroyData = async () => {
   }
 };
 
-if (process.argv[2] === "-d") {
-  destroyData();
-} else {
-  importData();
-}
+process.argv[2] === "-d" ? destroyData() : importData();
