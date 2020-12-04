@@ -54,7 +54,6 @@ const OrderScreen = ({ match, history }) => {
     );
   }
 
-  // TODO) PayPalButton
   useEffect(() => {
     if (!userInfo) history.push("/login");
 
