@@ -5,9 +5,27 @@ import Product from "../models/productModel.js";
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({});
+  // paginatation
+  const pageSize = 2;
+  const page = +req.query.pageNumber || 1;
 
-  res.json(products);
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
+
+  // @see https://docs.mongodb.com/manual/reference/operator/query/regex/
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1)); // iph -> iphone
+
+  const count = await Product.count({ ...keyword });
+
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 // @desc    Fetch all product
