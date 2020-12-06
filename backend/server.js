@@ -17,10 +17,6 @@ connectDB();
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -39,6 +35,20 @@ app.get("/api/config/paypal", (req, res) =>
 // folder static
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
+if (process.env.NODE_ENV === "production") {
+  // use static, frontent/build
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+} else {
+  // development
+  app.get("/", (req, res) => {
+    res.send("API is running");
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
