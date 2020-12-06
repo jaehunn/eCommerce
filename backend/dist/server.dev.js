@@ -6,8 +6,6 @@ var _express = _interopRequireDefault(require("express"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _colors = _interopRequireDefault(require("colors"));
-
 var _morgan = _interopRequireDefault(require("morgan"));
 
 var _db = _interopRequireDefault(require("./config/db.js"));
